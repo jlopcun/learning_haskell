@@ -1,0 +1,217 @@
+ENLACE AL LIBRO DEL CURSO https://en.wikibooks.org/wiki/Haskell
+
+*--__COMANDOS GHCI__--*
+    :load, :l = cargar un archivo .hs
+    :reload, :r = recargar un archivo .hs
+    :quit, :q = cerrar el intérprete ghci
+    :cd = moverse entre los directorios
+    :type, :t = devuelve el tipo del valor ingresado a su derecha (e.g // :t 2 --> 2 :: Num p => p)
+    :!clear , :!cls = limpia la terminal
+
+*--__EXPLICACIONES__--*
+    --VARIABLES Y FUNCIONES--
+        +Haskell tiene sus propias variables y también sus propias funciones, como pi, que equivale a , como su propio nombre indica, al valor matemático PI(3.141592653...)
+            (DEFINICIÓN DE VARIABLES)Las variables pueden ser definidas de la siguiente manera var = value (el nombre de la variable debe empezar con una letra minúscula) a diferencia de los lenguajes de programación imperativa, en haskell no se pueden redeclarar variables, es decir, reasignar valores a una variable ya difinida previamente, por ejemplo, el siguiente código en haskell no sería válido y lanzaría un error :
+                    r = 5
+                    r = 2 (redeclaración de la variable r, lanza un error, las variables son inmutables)
+            Por otra parte, las variables pueden usar el valor de otras independientemente de el orden de declaración, lo que permite lo siguiente
+                    y = x * 2
+                    x = 5
+                    --y devuelve x * 2, 10--
+        ++ARCHIVOS HASKELL
+            +el interprete ghci puede cargar archivos haskell, para ello, deberemos usar el comando :load (ruta del archivo) o usar su abrebiatura :l
+            De igual manera, cuando el archivo es modificado , deberemos usar el comando :reload o su abrebiatura :r
+            --COMENTARIOS--
+            1.-Comentarios de una sola línea --comentario
+            2.-Comentarios de múltiples líneas {-comentario-}
+        ++FUNCIONES
+            +las funciones nos permiten reutilizar código sin tener que repetirlo una y otra vez, de hecho , en eso se base la programación funcional(paradigma que usa haskell)
+            La sintaxis para definir una función en haskell es la siguiente:
+                                                            (nombre de la función) (parámetros) = (código)
+                                                            getArea radius = pi * radius ^ 2
+            Además , podemos asignarle el resultado de una función a una variable, por ejemplo, usando el ejemplo de función anterior
+                                                            area2 = getArea 2
+                                                            --devuelve el valor de la función getArea con el parámetro 2
+            --AGRUPAR EXPRESIONES--
+            ++como las funciones son tratadas como el valor que devuelven ,(e.g getArea 2 = 12,56...):
+                                                            getArea 5 * 3 --devuelve el resultado de getArea 5 y después lo multiplica por 3
+                                                            getArea (5 * 3) --devuelve el resultado de getArea 5* 3, es decir, getArea 15 
+            Este concepto también es importante para el uso de funciones dentro de otras funciones(funciones combinadas), para ver un ejemplo, ver el archivo haskell-test.hs de la línea 24 a la 32
+
+            Por otro lado, las funciones, como en cualquier otro lenguaje de programación , pueden recibir más de un parámetro (e.g haskell-test.hs líneas 34-36)
+            (VARIABLES LOCALES): dentro de una función , es posible que necesitemos crear variables locales, por ejemplo, cuando necesitamos hacer calculos con los parámetros de la misma sin tener que repetirlos o simplemente para hacer el código más entendible y fácil de leer(e.g haskell-test.hs líneas 52-56, fórmula de heron), donde escribimos primero la función y , abajo de la misma y tras una identación de 4 espacios, escribimos la palabra where y a continuación definimos la variable tal y como lo haríamos con una variable como cualquier otra
+    --TRUTH VALUES--
+        ++IGUALDAD Y OTRAS COMPARACIONES--
+        +Al igual que en otros lenguajes de programación, en haskell podemos hacer comparaciones entre dos valores, para ver si son iguales(==), menores(<), mayores(>), mayores o iguales(>=) o menores o iguales(<=)
+                5 == 5 -->True
+                5==6 -->False
+                5>6 -->False
+                6>5 -->True
+                5<6 -->True
+                6<5 -->False
+                6<=6 -->True
+                6<=25 -->True
+                10>=2 -->True
+                10=>10 --True
+        Estas comparaciones también las podemos hacer con los valores que devuelven las funciones, como podemos ver en las líneas 60-69
+        CABE RECALCAR que no se pueden hacer comparaciones entre valores de distinto tipo ( e.g 2==True dará un error de tipos)
+        ++INFIX OPERATORS
+        Los operadores(vistos anteriormente) en haskell funcionan como cualquier otra función , que en este caso, recibe dos parámetros.
+        Esto nos permite usar los operadores como funciones de la siguiente manera
+                (==) 5 5 -->True (5 es igual a 5)
+                (+) 3 4 -->7 (3 mas 4 es igual a 7)
+        Para ver más ejemplos de esto, mirar el archivo haskell-test.hs en las líneas 72-77
+        ++BOOLEAN OPERATIONS
+        Al igual que en otros lenguajes de programación como en javascript, haskell cuenta con los operadores de comparación entre booleanos
+           Boolean && Boolean --> and , devuelve True si los dos booleanos son true y de lo contrario devolverá False
+           Boolean || Boolean --> or, devuelve True si al menos un valor es true
+           not Boolean --> si es True, devuelve False y si es False devuelve True
+           Para ver ejemplos ir a el archivo haskell-test.hs en las líneas 79-88
+        
+        ++GUARDS
+        Los guards son funciones que devuelven un valor dependiendo de dos o más condiciones, de manera similar a como lo hacen las funciones definidas a trozos en matemáticas (de hecho, su sintaxis es idéntica)
+            guardName a
+                    |a>=0 ="mayor que 0"
+                    |a<-2 ="menor a -2
+                    |otherwise = "el número está comprendido entre -1 y -2
+        Este ejemplo muestra la estructura de un guard, donde "guardName" es el nombre de la función guard, "a" es un parámetro
+        Cada posible resultado tiene la siguiente sintaxis: |(evaluación) =(resultado si verdadero) este conjunto es lo que se conoce como guards proper
+        También vemos la palabra otherwise, que indica que devolverá su valor si ninguna de las condiciones anteriores es verdadera ( podría ser sustituida por el booleano True ).
+        Una vez llegue a una evaluación verdadera, devolverá su valor, si ninguna de las evaluaciones es verdadera, saltará un error, por eso es importante el uso de la palabra reservada otherwise, que siempre devolverá True.(NOTA:otherwise debe ponerse como la última condición a evaluar, ya que , al devolver siempre True, evaluará las condiciones solo hasta la guard prop en la que se encuentra, sin importar que posteriormente otra guard prop evalue a true) (ejemplo de guard en las líneas 92-97)
+            (e.g)
+            ❌
+            otherGuardIncorrect x 
+                |otherwise = "allways"
+                |x>=0       ="is positive"
+                |x<=        ="is negative"
+            otherGuardIncorrect 5 -->"allways"
+
+            ✔️
+            otherGuardCorrect x 
+                |x>=0       ="is positive"
+                |x<=        ="is negative"
+                |otherwise = "allways"
+            
+            otherGuardCorrect 5 --> "is positive"
+
+            ++GUARDS CON where
+            Al igual que cualquier función , los guards pueden usar where para la definición de variables locales, un ejemplo de ello se puede ver en las líneas 100-107
+            ++INILINE GUARDS
+            Los guards también pueden ser definidos en línea, lo cual no está recomendado ya que es más difícil de leer y de entender (e.g líneas 110-112)
+    --HASKELL/TYPES BASICS
+    Los tipos nos permiten diferenciar entre lo que un determinado valor puede hacer y lo que no puede hacer, por ejemplo , los números de tipo Number, pueden sumarse ,restarse,dividirse... entre ellos (2+2-->4) pero , un String/[Char] no puede hacerlo, ya que hacer este tipo de opearciones con letras no tiene sentido
+        ++:type
+        El comando :type o su abrebiatura :t nos sirven para imprimir en la terminal el tipo al que un determinado valor pertenece, por ejemplo , :t 2 dirá Num, :t "haskell" dirá [Char]...
+        La estructura de la respuesta sería la siguiente:
+                Prelude> :t "haskell"
+                "haskell" :: [Char]
+                (valor) (es de tipo) (tipo)  
+        ++Characters and strings
+        Como vemos en el ejemplo anterior, cuando le preguntamos a haskell de que tipo es la cadena "haskell", el compilador nos devuelve [Char] y no String, ya que las Strings son , a su vez , cadenas de caracteres [Char], es decir, son sinonimos, por lo cual podemos usar ambos indistintivamente ya que se refieren a lo mismo.(e.g líneas 118-122)
+            +-NOTA: los caracteres, es decir, una sola letra, deben expresarse en comillas simples 'H' 'J', mientras que las strings o cadenas de caracteres , deben expresarse entre comillas dobles "Haskell"  "JavaScript".
+            Si usamos las comillas dobles para un solo caracter (e.g "H") y le pedimos al compilador que nos devuelva su tipo, este nos dirá que es de tipo String o [Char], cosa que no es, es un único caracter y por tanto debería devolver simpolemente Char, por eso es importante usar las comillas simples para caracteres individuales.
+            Si lo hacemos al revés , es decir, usar comillas simples para String o [Char] (e.g 'hola que tal'), cuando queramos usarlo (no solo para saber su tipo) el compilador nos lanzará un error, ya que esto no se puede hacer.
+            --FUNCTIONAL TYPES
+            Las funciones en haskell tienen tipos al igual que el resto de valores, en su caso, los tipos del input y del output
+                Prelude>:t not
+                not :: Bool -> Bool
+                (name) (input type) (output tipe)
+                not es una función que recibe parámetros tipo Bool y retorna valores tipo Bool
+                (e.g líneas 129-131)
+            --chr y ord
+            chr y ord son dos funciones que nos permiten respectivamente convertir de ASCII a caracter y de caracter a ASCII, por ello , los tipos de sus inputs y outputs no son iguales , (e.g líneas 135-141) 
+            Estas dos funciones no están en el lenguaje de forma nativa, y por ende se deben importar desde el módula Data.Char de la siguente manera en la línea más alta del código
+                    import Data.Char(chr , ord)
+            --tipos en funciones con más de un argumento
+            En las funciones con más de un argumento, los tipos se expresaran de la siguiente manera:
+            1.- Primero se escribe el nombre de la función
+            2.-A continuación, se escriben los ::
+            3.-Se escribe el tipo del primer argumento y despés una flecha (->)
+            4.-Se escribe el número del segundo argumento y después una flecha (->)
+            5.-Repetimos el paso 4 hasta haber puesto todos los tipos de todos los argumentos
+            6.-Finalmente ponemos el tipo del output
+                (nombre de la función) :: (tipo arg1) -> (tipo arg2) -> (tipo arg3) -> (tipo output)
+            (E.G líneas 143-165)
+            --TYPE SIGNATURES IN CODE
+            Aclarar los tipos de cualquier tipo de variable o función es esencial para facilitar la lectura del código a los humanos y también al intérprete.
+            Los tipos se colocan encima de las declaraciones , como se puede ver a lo largo de todo el código en el archivo haskell-test.hs
+            E.G
+                variable :: String
+                variable = "soy una variable"
+            --SAME TYPE SIGNATURES FOR MULTIPLE FUNCTIONS
+            Si dos funciones tienen exactamente el mismo tipo , es decir, sus inputs y su output son exactamente del mismo tipo, podemos abreviar la expresión de tipos de la siguiente manera:
+                func1 , func2 :: Num -> Num
+            De esta manera, tanto func1 como func2 (al compartir los mismo tipos) tendrán la misma type signature al separar sus nombres por comas y después expresar los tipos como si fuese una única expresión
+
+    --LISTAS Y TUPLAS(lists and tuples)
+        ++LISTAS
+        Las listas y tuplas nos sirven para agrupar un conjunto de valores en un único valor.
+        Las listas solo pueden ser de un tipo, es decir, todos los valores que haya en su interior deben ser del mismo tipo(e.g bool, Num, String...) ya que si intentamos hacer una lista con valores de distintos tipos, resultará en un error (ejemplos de listas de la línea169-173 del archivo haskell-test.hs)
+            ++CONSING LISTS
+            Para añadir elementos a una lista podemos usar también el consing, que consiste en añadir elementos independientemente a una lista; sería de la siguiente manera:
+                    Prelude>0:1:2:3:4:5:[6,7,8,9,10]
+                    -->[0,1,2,3,4,5,6,7,8,9,10] (devuelve una NUEVA LISTA con los valores añadidos a la IZQUIERDA O INICIO de la lista)
+            Obviamente, todos los elementos que se quieran añadir a la lista mediante este método deben ser del mismo tipo.
+            Solo funciona de este modo, es decir, para añadir elementos a una lista , y no una lista a un elemento o una lista a una lista.
+            Por lo tanto, cuando se usa el consing operator(:) el último elemento deberá ser siempre una lista.
+            (E.G líneas 180-186 del archivo haskell-test.hs y ejercicios relacionados en este mismo archivo de las líneas 189-201)
+            ++LOS STRINGS SON LISTAS
+            Como ya vimos anteriormente, los strings son cadenas o listas de caracteres , por lo que podemos decir que un string es el resultado de hacer consing con los caracteres que la forman , e.g
+                    Prelude> "hey" == 'h':'e':'y':[]
+                    -->True
+            ++LISTAS DE LISTAS
+            Exercises
+
+            Which of these are valid Haskell and which are not? Rewrite in cons notation.
+                [1,2,3,[]]                                                          -->inValid lista de numeros no puede contener lista [Num] !== []
+                [1,[2,3],4]                                                         -->InValid lista de números no puede contener listas de números [Num] !== [[Num]]
+                [[1,2,3],[]]                                                        -->Valid lista de listas 
+            Which of these are valid Haskell, and which are not? Rewrite in comma and bracket notation.
+                []:[[1,2,3],[4,5,6]]                                                -->Valid lista vacía puede ser añadida a lista de números [[1,2,3],[4,5,6],[]]
+                []:[]                                                               -->Valid lista puede ser añadida a lista                                                       
+                []:[]:[]                                                            -->Valid dos listas vacías pueden ser añadidas a lista vacía
+                [1]:[]:[]                                                           -->Valid lista puede ser añadida a lista vacía
+                ["hi"]:[1]:[]                                                       -->InValid listas de diferentes tipos no pueden ser añadidas a misma lista [String] !== [Num]
+            Can Haskell have lists of lists of lists? Why or why not?
+            si, siempre y cuando sean de los mismos tipos
+            Why is the following list invalid in Haskell?
+                [[1,2],3,[4,5]]
+            It is invalid because 3 is type Num and [1,2] and [4,5] are type [Num]
+        ++TUPLAS(TUPLES)
+        Las tuplas son otra manera de agrupar elementos , pero que tiene dos diferencias fundamentales con las listas:
+            1.-Las tuplas son inmutables, es decir, tienen un número fijo de entradas por lo que no se les pueden añadir nuevos valores de ninguna manera
+            2.-Pueden contener valores de diferentes tipos, a diferencia de las listas.
+        Ejemplo de tupla (línea 205 del archivo haskell-test.hs) --> myTuple = (True,1,'C',"String",[],[1,2,3,4])
+        Las tuplas son nombradas según el número de elemntos que contenga, por ejemplo, una tupla de 2 se llamaría par, de 3 triple, de 4 cuadruple , de 5 quintuple ...
+        En haskell normalmente son usadas en las funciones que regresan más de un valor, y por ende, necesitan ser agrupados en uno único , la tupla.
+        ++COMBINAR LISTAS Y TUPLAS
+        Para añadir listas dentro de una tupla, no tenemos ningún tipo de restricción , ya que estas admiten todo tipo de tipos, pero las listas, al tener que ser todos los elementos de la misma del mismo tipo, solo podremos añadir tuplas del mismo tipo, es decir, con el mismo número de elementos , que estos esten en el mismo orden y que sean del mismo tipo, así mismo:
+                Prelude> [(True,"holas"),(False,"hello")] ✔️ 
+                Prelude> [(True,"holas"),("hello",False)] ❌
+                Prelude>[(True,12,"hi"),(False,12.345,"Not")]✔️
+                Prelude>[(True,17),("hola",False)] ❌
+        ++RETREIVING VALUES(extraer valores de una lista y de una tupla)
+        Para las tuplas , cuando se trata de pares, tenemos las funciones fst y snd, que devuelven respectivamente el primer y el segundo valor del par
+                Prelude> fst (1,2)
+                --> 1
+                Prelude> snd (1,2)
+                --> 2
+        NOTA: por definición fst y snd SOLO FUNCIONARAN EN PARES , si se usan en tuplas no pares lanzará un error
+        Para las listas tenemos dos funciones similares, head, que devuelve el primer elemento de la lista y tail, que devuelve la lista sin el primer elemento
+                Prelude> head [1,2,3,4,5]
+                --> 1
+                Prelude> tail [1,2,3,4,5]
+                --> [2,3,4,5]
+        NOTA: si se usan head y tail en listas vacias lanzarán un error, por lo que deben ser reemplazadas por métodos más seguros
+        (EJERCICIOS RELACIONADOS EN EL ARCHIVO haskell-test.hs líneas 211-223)
+        ++Polymorphic types(tipos polimórficos)
+        Hay veces en las que necesitamos que una función opere independientemente del tipo de cualquier parámetro que pueda reciber, para ello, en las type signatures usamos type variables, por ejemplo , en las funciones fst y snd, su type signature se vería de la siguiente manera:
+                Prelude>:t fst
+                --> fst :: (a, b) -->a 
+                Prelude>:t snd
+                -->snd :: (a,b) -->b
+        En este caso, las type variables son a y b , que hacen referencia a los dos elementos de una tupla, y que , estan escritas en minúsculas (a diferencia del resto de tipos que deben empezar por minúsuclas).
+
+        ((func :: a->a)) en este caso vemos la type signature de una función que recibe un parámetro de cualquier tipo(a) y devuelve otro que es de ese mismo tipo (a)
+        ((func :: a -> b)) en este caso vemos la type signature de una función que recibe un parámetro de cualquier tipo(a) y devuelve otro que puede ser o no del mismo tipo (b)        
+        
