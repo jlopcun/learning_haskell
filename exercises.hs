@@ -20,5 +20,9 @@ fac num
     |num==0 =1
     |otherwise = fac (num - 1) * num
 
+--Escribe una función en la que , recibida una lista de números , devuelva el promedio de sus valores
 
 
+
+getPrometer :: (Fractional a, Foldable t) => t a -> a
+getPrometer ls = sum ls / fromIntegral (length ls)

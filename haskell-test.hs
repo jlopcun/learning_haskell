@@ -225,3 +225,13 @@ getHeadTail ls = (head ls,tail ls)
 getFifth :: [a] -> a
 getFifth ls = head $ tail $ tail $ tail $ tail ls
 
+
+--TYPE BASICS II
+
+myInt :: Int
+myInt = 4
+
+myFractional :: Fractional a => a
+myFractional = 3.12
+
+

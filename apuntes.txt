@@ -45,6 +45,8 @@ ENLACE AL LIBRO DEL CURSO https://en.wikibooks.org/wiki/Haskell
         +Al igual que en otros lenguajes de programación, en haskell podemos hacer comparaciones entre dos valores, para ver si son iguales(==), menores(<), mayores(>), mayores o iguales(>=) o menores o iguales(<=)
                 5 == 5 -->True
                 5==6 -->False
+                5/=6-->True
+                6/=6-->False
                 5>6 -->False
                 6>5 -->True
                 5<6 -->True
@@ -214,4 +216,22 @@ ENLACE AL LIBRO DEL CURSO https://en.wikibooks.org/wiki/Haskell
 
         ((func :: a->a)) en este caso vemos la type signature de una función que recibe un parámetro de cualquier tipo(a) y devuelve otro que es de ese mismo tipo (a)
         ((func :: a -> b)) en este caso vemos la type signature de una función que recibe un parámetro de cualquier tipo(a) y devuelve otro que puede ser o no del mismo tipo (b)        
-        
+    --TYPE BASICS II consultar https://en.wikibooks.org/wiki/Haskell/Type_basics_II para comprender este tema más en detalle
+        ++La clase num
+        En haskell tenemos diferentes tipos para hacer referencia a distintos números (Float,Int...) y según la teoría de tipos no podrían ser sumados con la función + (porque son de distintos tipos)  pero si pueden sumarse, porque sus tipos son de la misma clase, la clase Num, por eso, la type signature de la función + sería la siguiente:
+        (+) :: Num a => a -> a -> a   
+        la parte donde se indica Num a => hace referencia a que se puede usar cualquier tipo (a) siempre y cuando sea de la clase Num.
+        el resto de la type signature se escribiría de la misma manera.
+        +-NOTA: para consultar dudas sobre esto, leer explicación original (https://en.wikibooks.org/wiki/Haskell/Type_basics_II)
+        ++PRINCIPALES TIPOS NUMÉRICOS
+            1.-Int: que corresponde a un número entero comprendido entre un valor máximo y uno mínimo definidos por el procesador del ordenador
+            2.-Integer:corresponde a números enteros , al igual que Int, pero sin máximo ni mínimo , lo que sacrifica un poco de eficiencia
+            3.-Double: corresponde a números decimales, pero con doble precisión ( 15 decimales) a diferencia de float, que es de "single precission" (7 decimales)
+        ++PROBLEMA MONOMÓRFICO
+        Así como algunos tipos de números (derivados de la clase Num) pueden adaptarse a otros tipos para poder hacer operaciones entre ellos (e.g 2 y 3.1 pueden sumarse a pesar de ser Int y Double, ya que Int puede adaptarse a Double) hay otros tipos de números que no pueden hacerlo; estos tipos son los que se conocen como tipos monomórficos.
+        Un ejemplo de tipo monomórfico es Int, lo que se puede ver cuando intentamos dividir un Int entre un Fractional, lo que nos dará ERROR( comprobar con la suma de myInt y myFractional entre las líneas 231 y 235 de haskell-test.hs)
+        Pero para estos casos existen funciones que nos permitirán convertir un tipo monomórfico a otro polimórfico , para el caso de un tipo de la clase Integral (Int o Integer) tenemos la función fromIntegral.
+                (usamos las variables myInt y myFractional del archivo haskell-test.hs de las líneas 231-235)
+                Prelude> myFractional + fromIntegral myInt
+                --> 7.12
+        --VIDEO EXPLICATIVO SOBRE TIPOS Y CLASES DE TIPOS https://www.youtube.com/watch?v=HYfEuN-8EHk
