@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 import Data.Char (ord, chr)
 import Data.Time.Calendar.MonthDay (monthLength)
 
@@ -235,3 +236,121 @@ myFractional :: Fractional a => a
 myFractional = 3.12
 
 
+--If then else clauses
+
+
+getSign :: (Ord a, Num a, Num p) => a -> p
+getSign x = 
+    if x <0
+        then -1
+    else if x==0
+        then 0
+    else 1
+
+getSignGuard :: (Ord a, Num a, Num p) => a -> p
+getSignGuard x
+    |x<0       = -1
+    |x==0      = 0
+    |otherwise = 1   
+    
+getAbs :: (Ord p, Num p) => p -> p
+getAbs x=
+    if x<0
+        then -x
+    else x
+
+getAbsGuard :: (Ord p, Num p) => p -> p
+getAbsGuard x
+    |x<0    = -x
+    |otherwise =x
+
+
+-- PATTERN MATCHING
+{-    10 points for the winner;
+    6 for second-placed;
+    4 for third-placed;
+    3 for fourth-placed;
+    2 for fifth-placed;
+    1 for sixth-placed;
+    no points for other racers.
+-}
+-- USO DE ESTRUCTURA IF THEN ELSE PARA RESOLVER EL PROBLEMA
+getPoints :: Int -> Int
+getPoints x = 
+    if x==1
+        then 10
+    else if x==2
+        then 6
+    else if x==3
+        then 4
+    else if x==4
+        then 3
+    else if x==5
+        then 2
+    else if x==6
+        then 1
+    else 0
+
+-- USO DEL WISE-DEFINITION PARA RESOLVER EL PROBLEMA
+getWisePoints :: Int -> Int
+getWisePoints 1 = 10
+getWisePoints 2 = 6
+getWisePoints 3 = 4
+getWisePoints 4 = 3
+getWisePoints 5 = 2
+getWisePoints 6 = 1
+getWisePoints _ = 0
+
+--USO DE UN GUARD PARA RESOLVER EL PROBLEMA
+getGuardPoints :: Int -> Int
+getGuardPoints x
+    |x==1   =10
+    |x<3   = 10 - x * 2
+    |x<=6   = 7 - x
+    |otherwise = 0
+
+-- USO DEL WISE-DEFINITION Y DE UN GUARD PARA RESOLVER EL PROBLEMA
+getPointsMixed :: Int -> Int
+getPointsMixed 1 = 10
+getPointsMixed 2 = 6
+
+getPointsMixed x
+    |x <= 6   = 7-x
+    |otherwise =0
+
+--ejemplo de como se puede definir una función que haga algo para cualquier valor que reciba como parámetro , pero que pueda tener alguna excepción
+getANum :: Int -> Int
+getANum 15 = 368
+--en este caso la excepción es 15 , que en lugar de devolver su doble como con cualquier otro número, devuelve 368
+getANum x = x * 2
+
+--TUPPLE AND LIST PATTERNS
+
+fst' :: (a, b) -> a
+fst' (x,d) = x
+
+snd' :: (a, b) -> b
+snd' (x,d) = d
+
+head' :: [a] -> a
+head' (x:xs) = x
+
+tail' :: [a] -> [a]
+tail' (x:xs) = xs
+
+getFifthOfList :: [a] -> a
+getFifthOfList (a:b:c:d:e:xs) = e
+
+fd :: [a] -> a
+fd (a:b:c:d:e:xs) = b
+
+
+-- LET BIDINGS
+getSquareRoot :: Float -> Float -> Float -> (Float,Float)
+getSquareRoot a b c = 
+    let sdisc = sqrt(b ^ 2 - 4 * a * b)
+        twice_a = 2 * a
+    in (
+        (-b + sdisc) / twice_a,
+        (-b - sdisc) / twice_a
+    )

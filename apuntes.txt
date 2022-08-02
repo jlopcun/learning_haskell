@@ -235,3 +235,49 @@ ENLACE AL LIBRO DEL CURSO https://en.wikibooks.org/wiki/Haskell
                 Prelude> myFractional + fromIntegral myInt
                 --> 7.12
         --VIDEO EXPLICATIVO SOBRE TIPOS Y CLASES DE TIPOS https://www.youtube.com/watch?v=HYfEuN-8EHk
+    --NEXT STEPS
+        ++IF THEN ELSE clause
+        Al igual que en casi cualquier lenguaje de programación , haskell cuenta con clausulas if else , cuya estructura es la siguiente:
+        (nombre del condicional) (parámetro) =
+                if (condición)
+                    then (valor si verdadero)
+                else if (condición)
+                    then (valor si verdadero)
+                else (valor si ninguna de las anteriores es verdadera)
+        Ejemplos de este tipo de estructuras pueden verse en el archivo haskell-test.hs entre las líneas 238-265 donde también se las compara con los guards
+        Al igual que los guards, estas estruturas son evaluadas condición a condición y cuando una es verdadera, acude a su correspondiente then y devuelve el valor, por ello, es necesario incluir un else con un valor por si ninguna de las condiciones evaluadas anteriormente es evaluada a verdadera.
+        Finalmente , estas estructuras condicionales también comparten con los guards el hecho de que todos sus posibles valores tienen que ser del mismo tipo ( no se podría hacer que si una condición es verdadera devuelva un Num y si otra lo es devuelva una String).
+        La elección entre usar un guard o un if then else depende de la situación , en la que uno será más legible y conveniente que otro.
+        ++PATTERN MATCHING
+        Hay veces en que ni los condicionales ni los guards son convenientes o legibles, para ello , tenemos otra alternativa, el pattern matching.
+        El pattern matching nos permite hacer que cuando una función reciba un determinado valor, devuelva otro explicitamente indicado, por ejemplo:
+                myFunc 1 = 10
+                myFunc 2 = 6
+                myFunc 3 = 4
+                myFunc _ = 0
+        En este caso estamos indicando que cuando myFunc reciba como parámetro 1, esta devuelva 10, cuando reciba 2, devuelva 6, cuando 3 , devuelva 4 y cuando reciba cualquier otra cosa (_) devuelva 0; este es un ejemplo similar al que podemos ver en haskell-test.hs entre las líneas 267-324 en la función getWisePoints.
+        Este tipo de definición de valores para una función es lo que se conoce como WISE-DEFINITION.
+        Algunos de los problemas que pueden surgir cuando usemos el pattern matching son:
+        1.-Si usamos un patrón que concuerde con cualquier valor (por ejemplo _) antes de cualquier otra wise-definition , las que vengan después por muy específicas que sean serán ignoradas por el intérprete (en este caso normalmente el IDE o editor de código indicará un error que dirá pattern match(es) are overlapped).
+        2.-Si para un valor dado no concuerda ningún valor, se lanzará un error, por lo que es importante añadir siempre un patrón que concuerde con cualquier valor no especificado anteriormente ( como un otherwise en los guards ).
+
+        El pattern matching , además nos puede servir para escribir una función que haga algo para cualquier valor que reciba pero que pueda tener alguna excepción (ejemplo en el archivo haskell-test.hs entre las líneas 320-324)
+
+        --TUPPLE AND LIST PATTERNS
+        Con las listas y las tuplas también se puede hacer pattern matching:
+            En el caso de las tuplas se usarian los paréntesis y dentro de los mismos definimos "variables" para almacenar los valores que pueda contener la tupla
+                myTupPattern (a,b) = a
+            Esta función recibirá una tupla de EXACTAMENTE DOS VALORES y devolverá el primero , tal y como los hace la función nativa fst
+
+            En el caso de las listas haremos lo mismo , pero en vez de usar  coma "," usaremos el consing operator ":"
+                myListPattern (a:b:c:d:xs) = b
+            Esta función recibirá una lista de AL MENOS DOS VALORES y devolverá el segundo
+
+            Más ejemplos de matching pattern con listas y tuplas en el archivo haskell-test.hs entre las líneas 327-345
+        
+        --LET BINDINGS
+        Otra forma de escribir variables locales dentro de una función (además de where) es usando let bindings, donde se indicaran las variables con la palabra reservada let y el resultado de la función con in
+            sayHi x = 
+                let hola = "Hola"
+                in holas ++ x
+        También se pueden usar más de una variables con let,  como vemos en el ejemplo del archivo haskell-test.hs en las líneas 348-356
