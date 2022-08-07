@@ -1,7 +1,6 @@
-{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
-import Data.Char (ord, chr)
+import Data.Char (ord, chr,isSpace)
 import Data.Time.Calendar.MonthDay (monthLength)
-
+import Data.List
 
 
 {-Este es mi primer archivo en haskell :)-}
@@ -354,3 +353,35 @@ getSquareRoot a b c =
         (-b + sdisc) / twice_a,
         (-b - sdisc) / twice_a
     )
+
+--BUILDING VOCABULARY
+-- FUNCTION COMPOSITION
+
+square :: Num a => a -> a
+square x = x ^ 2
+
+plusTwo :: Num a => a -> a
+plusTwo x = x + 2
+
+squarePlusTwo :: Int -> Int
+squarePlusTwo = square . plusTwo --esto es igual que (square . plusTwo) y que square (plusTwo x)
+-- en este caso no hace falta usar paréntesis , ya que no estamos incluyendo ningún argumento, solo creando una nueva función
+
+--One exhibit
+reverseString :: String -> [Char]
+reverseString = unwords . reverse . words 
+
+-- SIMPLE INPUT AND OUTPUT
+-- main :: IO ()
+-- main = do
+--     putStrLn "what is your name??"
+--     name <- getLine --asigna a una variable name el valor recibido de getLine
+--     putStrLn ("hola " ++ name ++ " como estás")
+
+main :: IO ()
+main = do
+    putStrLn "what is the base??"
+    base <- getLine
+    putStrLn "what is the height??"
+    height <- getLine
+    putStrLn ("the area of that triangle is: " ++ show ((read base * read height)/2))

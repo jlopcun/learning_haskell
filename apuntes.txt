@@ -281,3 +281,56 @@ ENLACE AL LIBRO DEL CURSO https://en.wikibooks.org/wiki/Haskell
                 let hola = "Hola"
                 in holas ++ x
         También se pueden usar más de una variables con let,  como vemos en el ejemplo del archivo haskell-test.hs en las líneas 348-356
+
+
+    --BUILDING VOCABULARY
+        --FUNCTION COMPOSITION (haskell-test.hs 359-370)
+        Consiste en aplicar una función a un valor, y luego otra función al resultado
+        Considerando el siguiente ejemplo donde square eleva un número al cuadrado y plusTwo le suma 2 a un número
+            Prelude> square (plusTwo 2) 
+            -->16
+        Primero plusTwo coje el 2 y le suma 2 , dando 4 como resultado
+        A continuación , square eleva el resultado anterior(4) al cuadrado , dando como resultado 16
+
+        EL RESULTADO DE HACER COMPOSING CON DOS O MÁS FUNCIONES RESULTA EN UNA NUEVA FUNCIÓN por ello es considerado buena práctica hacer una variable cuando se hace composing con funciones
+            --Composition operator
+            El composition operator( . ) funciona igual que el operador matemático  ∘ , que és crear una función con las funciones recibidas como argumento
+            Así sería el ejemplo anterior pero usando el composition operator en lugar de paréntesis
+                Prelude> (square . plusTwo) 2
+                -->16
+            NOTA: como el composition operator devuelve una nueva función , cuando asignamos su resultado a una variable no hace falta poner paréntesis NI argumentos
+                Prelude> squarePlusTwo = square . plusTwo
+        --THE NEED FOR A VOCABULARY
+        Ya existen muchas librerias con gran cantidad de funciones para realizar tareas comunes, por ello, los progrmadores efectivos de haskell necesitan estar familiarizados con las principales librerías de haskell para saber encontrar funciones en ellas y poder usarlas de forma efectiva, por ello, de ahora en adelante, nuestro estudio se basará en entender estas herramientas que la comunidad de haskell ya ha hecho.
+        --Prelude and libraries (haskell-test.hs 1-3)
+        Prelude es la librería principal ejecutada por defecto de haskell, todo lo visto anteriormente, pertenece a Prelude.
+        Haskell tiene una gran cantidad de librerias (llamadas módulos) , pero prelude es la única ejecutada por defecto, por ello , si queremos usar una librería deberemos importarla en el nivel más alto de nuestro archivo usando import(ver ejemplos en haskell-test.hs 1-3).
+        También podemos importar estos módulos en GHCI, para ello usaremos :m +módulo
+            Prelude> :m +Data.List
+        
+        --One exhibit(haskell-test.hs 371-372)
+        Ejemplo de creación de una función usando funciones del Prelude
+        NOTA: si una función se ve demasiado larga e incomprensible, siempre habrá una librería que la optimice
+        Las funciones usadas en este ejemplo procedentes de Prelude son:
+            words:transforma una string en una lista formada por las palabras (separadas por espacios " ") (el equivalente a split en JavaScript)
+            reverse: le da la vuelta a una lista , de modo que el primer elemento es el último, el último el primero, el segundo el antepenultimo, el antepenultimo el segundo... justo igual que en JavaScript
+            unwords:hace lo contrario que words ( como join en JavaScript)
+            isSpace: comprueba si el Char recibido es un espacio
+            concat: junta una lista de strings en un único string SIN SEPARACIÓN (como join("") en JavaScript)
+            groupBy: agrupa los elementos de una lista en base a un criterio con sus consiguientes( groupBy (>=) [1,2,3,4,5,6,7]).
+            intersperse: separa los elementos de una lista por un separador( intersperese separator list)
+    --SIMPLE INPUT AND OUTPUT
+        Como cualquier lenguaje de programación , haskell también puede interactuar con el "mundo exterior".
+        Un ejemplo de ello son putStr y putStrLn , que sirven para imprimir en la pantalla del programa una string
+        La diferencia es que putStr no introduce ningún espaciado, mientras que putStrLn imprime( además del mensaje) un "line break" ,de modo que el contenido a continuación aparecerá en una nueva línea.
+
+        Cuando intentamos sacar el tipo de funciones que interactuan como estas , GHCi nos indica que el tipo de su output o resultado es IO().
+        Siempre que haya una interacción con la pantalla, su tipo será IO , y la otra parte () será el tipo del valor que retorna la acción( en el caso de putStr y putStrLn al no retornar nada, devuelve el () o una tupla vacía).
+        En conclusión, IO() deberíamos leerlo como "una acción (IO) que no devuelve nada ( () )
+
+        Un programa de haskell es realmente una IO muy grande, llamada main, que contiene todas las instrucciones del programa
+        Desde este punto de vista, escribir un programa en haskell es combinar acciones y funciones que componen el main, que  será ejecutado (el main) cuando el programa se inicie.
+        --SECUENCIANDO ACCIONES CON DO (haskell-test.hs 374-379)
+        Las notaciones con do significan poner acciones en conjunto(lo que es esencial para hacer cosas con haskell)
+        
+
