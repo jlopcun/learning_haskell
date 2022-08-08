@@ -241,7 +241,7 @@ myFractional = 3.12
 getSign :: (Ord a, Num a, Num p) => a -> p
 getSign x = 
     if x <0
-        then -1
+        then  -1
     else if x==0
         then 0
     else 1
@@ -385,3 +385,6 @@ main = do
     putStrLn "what is the height??"
     height <- getLine
     putStrLn ("the area of that triangle is: " ++ show ((read base * read height)/2))
+
+
+        

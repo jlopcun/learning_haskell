@@ -40,4 +40,3 @@ fibTo :: Int -> [Int]
 fibTo n = map fib [1..n]
 
 
-

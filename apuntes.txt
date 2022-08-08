@@ -319,7 +319,7 @@ ENLACE AL LIBRO DEL CURSO https://en.wikibooks.org/wiki/Haskell
             concat: junta una lista de strings en un único string SIN SEPARACIÓN (como join("") en JavaScript)
             groupBy: agrupa los elementos de una lista en base a un criterio con sus consiguientes( groupBy (>=) [1,2,3,4,5,6,7]).
             intersperse: separa los elementos de una lista por un separador( intersperese separator list)
-    --SIMPLE INPUT AND OUTPUT
+    --SIMPLE INPUT AND OUTPUT https://en.wikibooks.org/wiki/Haskell/Simple_input_and_output
         Como cualquier lenguaje de programación , haskell también puede interactuar con el "mundo exterior".
         Un ejemplo de ello son putStr y putStrLn , que sirven para imprimir en la pantalla del programa una string
         La diferencia es que putStr no introduce ningún espaciado, mientras que putStrLn imprime( además del mensaje) un "line break" ,de modo que el contenido a continuación aparecerá en una nueva línea.
@@ -332,5 +332,37 @@ ENLACE AL LIBRO DEL CURSO https://en.wikibooks.org/wiki/Haskell
         Desde este punto de vista, escribir un programa en haskell es combinar acciones y funciones que componen el main, que  será ejecutado (el main) cuando el programa se inicie.
         --SECUENCIANDO ACCIONES CON DO (haskell-test.hs 374-379)
         Las notaciones con do significan poner acciones en conjunto(lo que es esencial para hacer cosas con haskell)
-        
 
+        --CLARIFICACIONES DE FLECHA IZQUIERDA (lef arrow clarifications) <- (archivo haskellProject/app/Main.hs líneas 14-21)
+        Se usan para obtener valores.
+        Existen muy pocas restricciones para usar el operador <-, de hecho , se puede asignar a una variable el valor de una acción que no devuelve ningún valor
+            main do=
+                x <- putStrLn "what is your name??"
+                name <- getLine
+                print x
+
+        En este caso x recibe () , es decir , NADA
+        Como el uso del operador <- implica que el interprete espere otra acción después, recibiremos un error si intentamos usarlo en la última acción del programa       
+
+        --CONTROLANDO ACCIONES (controlling actions) (archivo haskellProject/app/Main.hs líneas 23-59)
+        Los if/then/else pueden ser usados dentro de un bloque do y por lo tanto controlar las acciones de un programa
+        Para ello , habrá que usar do en las clausulas then de cada condición
+        Además, las diferentes acciones dentro del do block deben estar identados de manera idéntica
+            doGuessing = do
+                putStrLn "pick a number"
+                number <- getLine
+                if read num > 2
+                    then do putStrLn "too high"
+                        doGuessing ❌
+            _______________________________________
+
+            doGuessing = do
+                putStrLn "pick a number"
+                number <- getLine
+                if read num > 2
+                    then do putStrLn "too high"
+                            doGuessing ✔️
+
+
+ 
+        Finalmente, como en toda cláusula if/then/else , todas las ramas deben tener el mismo tipo , en este caso como son acciones, todas tienen tipo IO()
